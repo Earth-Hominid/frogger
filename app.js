@@ -9,6 +9,7 @@ const logsLeft = document.querySelector('.log-left')
 const logsRight = document.querySelector('.log-right')
 const width = 9
 let currentIndex = 76
+let currentTime = 20
 let timerID
 
 //render frog on starting block
@@ -80,11 +81,82 @@ function moveCarRight(carRight) {
 
 // move the logs
 function autoMoveLogs() {
-  logsLeft.forEach(logsLeft => moveLogLeft(logLeft))
   logsLeft.forEach(logLeft => moveLogLeft(logLeft))
+  logsLeft.forEach(logRight => moveLogRight(logRight))
 }
 
+// move the log left on a time loop
+function moveLogLeft(logLeft) {
+  switch(true) {
+    case logLeft.classList.contains('l1'):
+         logLeft.classList.remove('l1')
+         logLeft.classList.add('l2')
+      break
+      case logLeft.classList.contains('l2'):
+           logLeft.classList.remove('l2')
+           logLeft.classList.add('l3')
+      break
+      case logLeft.classList.contains('l3'):
+           logLeft.classList.remove('l3')
+           logLeft.classList.add('l4')
+      break
+      case logLeft.classList.contains('l4'):
+           logLeft.classList.remove('l4')
+           logLeft.classList.add('l5')
+      break
+      case logLeft.classList.contains('l5'):
+           logLeft.classList.remove('l5')
+           logLeft.classList.add('l1')
+      break
+  }
+}
 
+// move the log right on a time loop
+function moveLogRight(logRight) {
+  switch(true) {
+    case logRight.classList.contains('l1'):
+         logRight.classList.remove('l1')
+         logRight.classList.add('l5')
+      break
+      case logRight.classList.contains('l2'):
+           logRight.classList.remove('l2')
+           logRight.classList.add('l1')
+      break
+      case logRight.classList.contains('l3'):
+           logRight.classList.remove('l3')
+           logRight.classList.add('l2')
+      break
+      case logRight.classList.contains('l4'):
+           logRight.classList.remove('l4')
+           logRight.classList.add('l3')
+      break
+      case logRight.classList.contains('l5'):
+      logRight.classList.remove('l5')
+      logRight.classList.add('l4')
+      break
+  }
+}
+
+// rules to win Frogger
+
+function win() {
+  if (squares[4].classList.contains('frog')) {
+    result.innerHTML = "YOU WON"
+    squares[currentIndex].classList.remove('frog')
+    clearInterval(timerId)
+    document.removeEventListener('keyup', moverFrog)
+  }
+}
+
+// rules to lose Frogger
+function lose() {
+  if ((currentTime === 0) || (squares[currentIndex].classList.contains('c1')) || (squares[currentIndex].classList.contains('l5')) || (squares[currentIndex].classList.contains('l4'))) {
+    result.innerHTML = 'YOU LOSE'
+    squares[currentIndex].classList.remove('frog')
+    clearInterval(timerId)
+    document.removeEventListener('keyup', moveFrog)
+  }
+}
 
 
 })
